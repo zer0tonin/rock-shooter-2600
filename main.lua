@@ -1,5 +1,3 @@
-local pretty = require "pl.pretty"
-
 local Ship = require "ship"
 local Asteroid = require "asteroid"
 
@@ -73,6 +71,7 @@ function love.update(dt)
     for key, val in ipairs(asteroids) do
         val:move(dt)
     end
+
 end
 
 function love.draw()
