@@ -2,9 +2,20 @@ local Ship = require "ship"
 local Asteroid = require "asteroid"
 
 function love.load()
-    player = Ship:new(love.graphics.newImage("assets/ship.png"))
-    asteroids = {}
     timer = love.timer.getTime()
+
+    player = Ship:new(love.graphics.newImage("assets/ship.png"))
+
+    image = {}
+    image[50] = love.graphics.newImage("assets/asteroid50.png")
+    image[100] = love.graphics.newImage("assets/asteroid100.png")
+    image[150] = love.graphics.newImage("assets/asteroid100.png")
+    image[200] = love.graphics.newImage("assets/asteroid200.png")
+    image["bullet"] = love.graphics.newImage("assets/bullet.png")
+
+    asteroids = {}
+
+    bullets = {}
 end
 
 function love.update(dt)
@@ -28,21 +39,18 @@ function love.update(dt)
     player:rotate(math.atan2(mouse.y - player.y, mouse.x - player.x) + math.pi/2)
 
     --generates new asteroids
+    --should be a revamped Constructor
     if #asteroids < 3 or love.timer.getTime() - timer > 30 then
         math.randomseed(os.time() * #asteroids)
         local size = math.random()
-        local image = love.graphics.newImage("assets/asteroid200.png")
 
         --picks the size
         if size < 0.20 then
             size = 50
-            image = love.graphics.newImage("assets/asteroid50.png")
         elseif size < 0.60 then
             size = 100
-            image = love.graphics.newImage("assets/asteroid100.png")
         elseif size < 0.90 then
             size = 150
-            image = love.graphics.newImage("assets/asteroid150.png")
         else
             size = 200
         end
@@ -65,18 +73,33 @@ function love.update(dt)
         else
         end
 
-        asteroids[#asteroids+1] = Asteroid:new(image, x, y, size)
+        asteroids[#asteroids+1] = Asteroid:new(image[size], x, y, size)
     end
 
     for key, val in ipairs(asteroids) do
         val:move(dt)
     end
 
+    for key, val in ipairs(bullets) do
+        val:move(dt)
+    end
+
+end
+
+function love.mousepressed(x, y, button)
+    if button == "l" then
+        bullets[#bullets+1] = player:shoot(x, y, image["bullet"])
+    end
 end
 
 function love.draw()
     love.graphics.draw(player.image, player.x, player.y, player.r, 1, 1, player.width/2, player.height/2)
+
     for key, val in ipairs(asteroids) do
+        love.graphics.draw(val.image, val.x, val.y)
+    end
+
+    for key, val in ipairs(bullets) do
         love.graphics.draw(val.image, val.x, val.y)
     end
 end

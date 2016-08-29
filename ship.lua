@@ -1,3 +1,5 @@
+local Bullet = require "bullet"
+
 local Ship = {}
 
 --[[
@@ -30,6 +32,15 @@ end
 
 function Ship:rotate(r)
     self.r = r
+end
+
+function Ship:shoot(x, y, image)
+    local start = {
+        x = self.x,
+        y = self.y
+    }
+    local angle = math.atan2(x - start.x, y - start.y)
+    return Bullet:new(start, angle, image)
 end
 
 return Ship
