@@ -46,8 +46,9 @@ function love.update(dt)
     player:rotate(math.atan2(mouse.y - player.y, mouse.x - player.x) + math.pi/2)
 
     --generates new asteroids
-    if #asteroids < 3 or love.timer.getTime() - timer > 30 then
+    if #asteroids < 3 or love.timer.getTime() - timer > 10 then
         asteroids[#asteroids+1] = Asteroid:newRandom()
+        timer = love.timer.getTime()
     end
 
     --moves the asteroids
@@ -71,7 +72,7 @@ function love.update(dt)
                 --removes the bullet
                 table.remove(bullets, bullet.key)
                 bullet.value = nil
-                
+
                 --generates new asteroids and removes the destroyed one
                 table.remove(asteroids, key)
                 if val.size == 200 then
@@ -89,11 +90,11 @@ function love.update(dt)
             end
 
             if tableContainsShape(asteroids, shape) then
-                print("collision with an asteroid")
+                --print("collision with an asteroid")
             end
 
             if shape == player.shape then
-                print("collision with the player")
+                --print("collision with the player")
             end
         end
 
