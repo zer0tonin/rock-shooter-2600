@@ -1,16 +1,26 @@
+--keeps the module path at the directory root
 package.path = ";../"
+
 
 local Ship = require "objects.ship"
 local Asteroid = require "objects.asteroid"
 local HC = require "HC"
+local Gamestate = require "hump.gamestate"
+local gameOver = require "states.gameOver"
 
 local game = {}
 
+--var init
+local timer
+local player
+local images
+local asteroids = {}
+local bullets = {}
+local score
+local font
+
 function game:enter()
     timer = love.timer.getTime()
-
-    love.physics.setMeter(100)
-    love.physics.newWorld(0)
 
     player = Ship:new()
 
@@ -23,9 +33,10 @@ function game:enter()
     images["bullet"] = love.graphics.newImage("assets/bullet.png")
     images["player"] = love.graphics.newImage("assets/ship.png")
 
-    asteroids = {}
+    score = 0
 
-    bullets = {}
+    font = love.graphics.newFont("assets/Squareo.ttf", 25)
+    love.graphics.setFont(font)
 end
 
 function game:update(dt)
@@ -51,7 +62,7 @@ function game:update(dt)
 
     --generates new asteroids
     if #asteroids < 3 or love.timer.getTime() - timer > 10 then
-        asteroids[#asteroids+1] = Asteroid:newRandom()
+        asteroids[#asteroids+1] = Asteroid:newRandom(#asteroids)
         timer = love.timer.getTime()
     end
 
@@ -65,6 +76,29 @@ function game:update(dt)
         val:move(dt)
     end
 
+    detectCollisions()
+
+end
+
+--shoots bullets on mouse click
+function game:mousepressed(x, y, button)
+    if button == "l" then
+        bullets[#bullets+1] = player:shoot(x, y)
+    end
+end
+
+--used to check if the collisions come from a bullet or an asteroid
+function tableContainsShape(table, shape)
+    for key, value in ipairs(table) do
+        if value.shape == shape then
+            return {key, value}
+        end
+    end
+    return false
+end
+
+--detects collisions
+function detectCollisions()
     --detects the collisions with each asteroids
     for key, val in ipairs(asteroids) do
         local collisions = HC.collisions(val.shape)
@@ -91,6 +125,9 @@ function game:update(dt)
                     asteroids[#asteroids+1] = Asteroid:new(val.x - 30, val.y - 30, 50)
                 end
                 val = nil
+
+                --increments the score
+                score = score + 50
             end
 
             if tableContainsShape(asteroids, shape) then
@@ -98,29 +135,11 @@ function game:update(dt)
             end
 
             if shape == player.shape then
-                --print("collision with the player")
+                Gamestate.switch(gameOver, score)
             end
         end
 
     end
-
-end
-
---shoots bullets on mouse click
-function game:mousepressed(x, y, button)
-    if button == "l" then
-        bullets[#bullets+1] = player:shoot(x, y)
-    end
-end
-
---used to check if the collisions come from a bullet or an asteroid
-function tableContainsShape(table, shape)
-    for key, value in ipairs(table) do
-        if value.shape == shape then
-            return {key, value}
-        end
-    end
-    return false
 end
 
 function game:draw()
@@ -133,6 +152,8 @@ function game:draw()
     for key, val in ipairs(bullets) do
         love.graphics.draw(images["bullet"], val.x, val.y)
     end
+
+    love.graphics.print(score, 50, 50)
 end
 
 return game

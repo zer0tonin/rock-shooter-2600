@@ -8,10 +8,10 @@ local HC = require "HC"
     newY: the starting y coordinate
     newSize: the size of the asteroid (must be equal to the image's size)
 --]]
-function Asteroid:newRandom()
+function Asteroid:newRandom(len)
     math.randomseed(os.time())
 
-    math.randomseed(os.time() * #asteroids)
+    math.randomseed(os.time() * len)
     local newSize = math.random()
 
     --picks the size
@@ -26,7 +26,7 @@ function Asteroid:newRandom()
     end
 
     --picks if it will come from the top or the bottom of the screen
-    math.randomseed(os.time() * #asteroids)
+    math.randomseed(os.time() * len)
     local location = math.random()
     local newX = math.random(0, 800)
     local newY = math.random(-100, 0)
