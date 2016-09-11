@@ -1,5 +1,5 @@
-local Bullet = require "bullet"
 local HC = require "HC"
+local Bullet = require "objects.bullet"
 
 local Ship = {}
 
