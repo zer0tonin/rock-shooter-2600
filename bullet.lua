@@ -5,8 +5,7 @@ function Bullet:new(start, newAngle, newImage)
         x = start.x,
         y = start.y,
         angle = newAngle,
-        image = newImage,
-        speed = 200
+        speed = 250
     }
 
     self.__index = self

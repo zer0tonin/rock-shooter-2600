@@ -7,7 +7,7 @@ local Asteroid = {}
     newY: the starting y coordinate
     newSize: the size of the asteroid (must be equal to the image's size)
 --]]
-function Asteroid:new(images)
+function Asteroid:new()
     math.randomseed(os.time())
 
     math.randomseed(os.time() * #asteroids)
@@ -47,7 +47,6 @@ function Asteroid:new(images)
         y = newY,
         r = 0,
         size = newSize,
-        image = image[newSize],
         speed = 50,
         wayPoint = {
             x = math.random(0, 800),

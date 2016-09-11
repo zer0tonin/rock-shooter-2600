@@ -14,7 +14,6 @@ function Ship:new(world)
         width = 53,
         height = 63,
         speed = 200,
-        image = love.graphics.newImage("assets/ship.png"),
         body = newBody,
         shape = newShape,
         fixture = newFixture

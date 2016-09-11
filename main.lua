@@ -11,12 +11,13 @@ function love.load()
     player = Ship:new()
 
     --images for the asteroids
-    image = {}
-    image[50] = love.graphics.newImage("assets/asteroid50.png")
-    image[100] = love.graphics.newImage("assets/asteroid100.png")
-    image[150] = love.graphics.newImage("assets/asteroid100.png")
-    image[200] = love.graphics.newImage("assets/asteroid200.png")
-    image["bullet"] = love.graphics.newImage("assets/bullet.png")
+    images = {}
+    images[50] = love.graphics.newImage("assets/asteroid50.png")
+    images[100] = love.graphics.newImage("assets/asteroid100.png")
+    images[150] = love.graphics.newImage("assets/asteroid100.png")
+    images[200] = love.graphics.newImage("assets/asteroid200.png")
+    images["bullet"] = love.graphics.newImage("assets/bullet.png")
+    images["player"] = love.graphics.newImage("assets/ship.png")
 
     asteroids = {}
 
@@ -44,11 +45,8 @@ function love.update(dt)
     player:rotate(math.atan2(mouse.y - player.y, mouse.x - player.x) + math.pi/2)
 
     --generates new asteroids
-    --should be a revamped Constructor
     if #asteroids < 3 or love.timer.getTime() - timer > 30 then
-
-
-        asteroids[#asteroids+1] = Asteroid:new(image)
+        asteroids[#asteroids+1] = Asteroid:new()
     end
 
     for key, val in ipairs(asteroids) do
@@ -63,18 +61,18 @@ end
 
 function love.mousepressed(x, y, button)
     if button == "l" then
-        bullets[#bullets+1] = player:shoot(x, y, image["bullet"])
+        bullets[#bullets+1] = player:shoot(x, y)
     end
 end
 
 function love.draw()
-    love.graphics.draw(player.image, player.x, player.y, player.r, 1, 1, player.width/2, player.height/2)
+    love.graphics.draw(images["player"], player.x, player.y, player.r, 1, 1, player.width/2, player.height/2)
 
     for key, val in ipairs(asteroids) do
-        love.graphics.draw(val.image, val.x, val.y)
+        love.graphics.draw(images[val.size], val.x, val.y)
     end
 
     for key, val in ipairs(bullets) do
-        love.graphics.draw(val.image, val.x, val.y)
+        love.graphics.draw(images["bullet"], val.x, val.y)
     end
 end
