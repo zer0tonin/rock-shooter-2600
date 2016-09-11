@@ -8,7 +8,7 @@ local HC = require "HC"
     newY: the starting y coordinate
     newSize: the size of the asteroid (must be equal to the image's size)
 --]]
-function Asteroid:new()
+function Asteroid:newRandom()
     math.randomseed(os.time())
 
     math.randomseed(os.time() * #asteroids)
@@ -42,6 +42,10 @@ function Asteroid:new()
         newY = math.random(0, 600)
     end
 
+    return Asteroid:new(newX, newY, newSize)
+end
+
+function Asteroid:new(newX, newY, newSize)
     local newAsteroid = {
         x = newX,
         y = newY,

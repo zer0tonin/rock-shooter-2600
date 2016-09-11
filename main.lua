@@ -47,7 +47,7 @@ function love.update(dt)
 
     --generates new asteroids
     if #asteroids < 3 or love.timer.getTime() - timer > 30 then
-        asteroids[#asteroids+1] = Asteroid:new()
+        asteroids[#asteroids+1] = Asteroid:newRandom()
     end
 
     --moves the asteroids
@@ -63,21 +63,45 @@ function love.update(dt)
     --detects the collisions with each asteroids
     for key, val in ipairs(asteroids) do
         local collisions = HC.collisions(val.shape)
+
         for shape, vector in pairs(collisions) do
-            if tableContainsShape(bullets, shape) then
-                print("collision with a bullet")
-            elseif tableContainsShape(asteroids, shape) then
+            local bullet = tableContainsShape(bullets, shape)
+            if bullet then
+
+                --removes the bullet
+                table.remove(bullets, bullet.key)
+                bullet.value = nil
+                
+                --generates new asteroids and removes the destroyed one
+                table.remove(asteroids, key)
+                if val.size == 200 then
+                    asteroids[#asteroids+1] = Asteroid:new(val.x + 30, val.y + 30, 100)
+                    asteroids[#asteroids+1] = Asteroid:new(val.x - 30, val.y - 30, 100)
+                elseif val.size == 150 then
+                    asteroids[#asteroids+1] = Asteroid:new(val.x + 30, val.y + 30, 50)
+                    asteroids[#asteroids+1] = Asteroid:new(val.x + 30, val.y - 30, 50)
+                    asteroids[#asteroids+1] = Asteroid:new(val.x - 30, val.y - 30, 50)
+                elseif val.size == 100 then
+                    asteroids[#asteroids+1] = Asteroid:new(val.x + 30, val.y + 30, 50)
+                    asteroids[#asteroids+1] = Asteroid:new(val.x - 30, val.y - 30, 50)
+                end
+                val = nil
+            end
+
+            if tableContainsShape(asteroids, shape) then
                 print("collision with an asteroid")
-            elseif shape == player.shape then
+            end
+
+            if shape == player.shape then
                 print("collision with the player")
-            else
-                print("collision with an unknown object")
             end
         end
+
     end
 
 end
 
+--shoots bullets on mouse click
 function love.mousepressed(x, y, button)
     if button == "l" then
         bullets[#bullets+1] = player:shoot(x, y)
@@ -88,7 +112,7 @@ end
 function tableContainsShape(table, shape)
     for key, value in ipairs(table) do
         if value.shape == shape then
-            return true
+            return {key, value}
         end
     end
     return false
