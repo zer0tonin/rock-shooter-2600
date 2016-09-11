@@ -1,4 +1,3 @@
-local HC = require "HC"
 local Ship = require "ship"
 local Asteroid = require "asteroid"
 

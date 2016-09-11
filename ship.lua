@@ -1,4 +1,5 @@
 local Bullet = require "bullet"
+local HC = require "HC"
 
 local Ship = {}
 
@@ -6,7 +7,7 @@ local Ship = {}
     Constructor :
     newImage : the ship's image
 ]]--
-function Ship:new(world)
+function Ship:new()
     local newShip = {
         x = 300,
         y = 400,
@@ -16,7 +17,8 @@ function Ship:new(world)
         speed = 200,
         body = newBody,
         shape = newShape,
-        fixture = newFixture
+        fixture = newFixture,
+        rectangle = HC.rectangle(300 - (53/2), 400 - (63/2), 53, 63)
     }
 
     self.__index = self
@@ -26,14 +28,18 @@ end
 function Ship:move(dx, dy)
     if self.x + dx < 600 and self.x + dx > 0 then
         self.x = self.x + dx
+        self.rectangle:move(dx, 0)
     end
     if self.y + dy < 800 and self.y + dy > 0 then
         self.y = self.y + dy
+        self.rectangle:move(0, dy)
     end
 end
 
 function Ship:rotate(r)
+    local dr = r - self.r
     self.r = r
+    self.rectangle:rotate(dr)
 end
 
 function Ship:shoot(x, y, image)
