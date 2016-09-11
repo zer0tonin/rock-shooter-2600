@@ -18,7 +18,7 @@ function Ship:new()
         body = newBody,
         shape = newShape,
         fixture = newFixture,
-        rectangle = HC.rectangle(300 - (53/2), 400 - (63/2), 53, 63)
+        shape = HC.rectangle(300 - (53/2), 400 - (63/2), 53, 63)
     }
 
     self.__index = self
@@ -28,18 +28,18 @@ end
 function Ship:move(dx, dy)
     if self.x + dx < 600 and self.x + dx > 0 then
         self.x = self.x + dx
-        self.rectangle:move(dx, 0)
+        self.shape:move(dx, 0)
     end
     if self.y + dy < 800 and self.y + dy > 0 then
         self.y = self.y + dy
-        self.rectangle:move(0, dy)
+        self.shape:move(0, dy)
     end
 end
 
 function Ship:rotate(r)
     local dr = r - self.r
     self.r = r
-    self.rectangle:rotate(dr)
+    self.shape:rotate(dr)
 end
 
 function Ship:shoot(x, y, image)

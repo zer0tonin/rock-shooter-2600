@@ -1,4 +1,5 @@
 local Asteroid = {}
+local HC = require "HC"
 
 --[[
     Constructor :
@@ -39,7 +40,6 @@ function Asteroid:new()
     elseif location < 0.75 then
         newX = math.random(-100, 0)
         newY = math.random(0, 600)
-    else
     end
 
     local newAsteroid = {
@@ -51,7 +51,8 @@ function Asteroid:new()
         wayPoint = {
             x = math.random(0, 800),
             y = math.random(0, 600)
-        }
+        },
+        shape = HC.circle(newX + newSize/2, newY + newSize/2, newSize/2)
     }
 
     self.__index = self
@@ -107,6 +108,8 @@ function Asteroid:move(dt)
         self.x = self.x + dx
 
         self.y = self.y + dy
+
+        self.shape:move(dx, dy)
     end
 end
 
