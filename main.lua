@@ -48,10 +48,12 @@ function love.update(dt)
         asteroids[#asteroids+1] = Asteroid:new()
     end
 
+    --moves the asteroids
     for key, val in ipairs(asteroids) do
         val:move(dt)
     end
 
+    --moves the bullets
     for key, val in ipairs(bullets) do
         val:move(dt)
     end

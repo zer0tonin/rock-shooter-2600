@@ -1,7 +1,12 @@
 local Bullet = {}
 local HC = require "HC"
 
-function Bullet:new(start, newAngle, newImage)
+--[[
+    Constructor :
+    start : x and y coordinates (of the ship)
+    newAngle : angle between the ship and the mouse
+--]]
+function Bullet:new(start, newAngle)
     local newBullet = {
         x = start.x,
         y = start.y,
@@ -14,6 +19,8 @@ function Bullet:new(start, newAngle, newImage)
     return setmetatable(newBullet, self)
 end
 
+--moves the bullet
+--bullets are supposed to go toward the mouseclick position
 function Bullet:move(dt)
     local dy = math.cos(self.angle) * (dt * self.speed)
     local dx = math.sin(self.angle) * (dt * self.speed)

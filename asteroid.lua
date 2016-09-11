@@ -3,7 +3,7 @@ local HC = require "HC"
 
 --[[
     Constructor :
-    newImage : the image for the asteroid
+    randomly generates data for :
     newX : the starting x coordinate
     newY: the starting y coordinate
     newSize: the size of the asteroid (must be equal to the image's size)

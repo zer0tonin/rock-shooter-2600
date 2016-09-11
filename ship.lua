@@ -25,23 +25,27 @@ function Ship:new()
     return setmetatable(newShip, self)
 end
 
+--moves the ship by dx and dy
+--stops it from goint out of the window
 function Ship:move(dx, dy)
-    if self.x + dx < 600 and self.x + dx > 0 then
+    if self.x + dx < 800 and self.x + dx > 0 then
         self.x = self.x + dx
         self.shape:move(dx, 0)
     end
-    if self.y + dy < 800 and self.y + dy > 0 then
+    if self.y + dy < 600 and self.y + dy > 0 then
         self.y = self.y + dy
         self.shape:move(0, dy)
     end
 end
 
+--basically a setter for r
 function Ship:rotate(r)
     local dr = r - self.r
     self.r = r
     self.shape:rotate(dr)
 end
 
+--generates bullets
 function Ship:shoot(x, y, image)
     local start = {
         x = self.x,
