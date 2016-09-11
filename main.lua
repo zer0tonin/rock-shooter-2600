@@ -1,5 +1,6 @@
 local Ship = require "ship"
 local Asteroid = require "asteroid"
+local HC = require "HC"
 
 function love.load()
     timer = love.timer.getTime()
@@ -24,6 +25,7 @@ function love.load()
 end
 
 function love.update(dt)
+
     --moves the player around
     if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
         player:move(player.speed * dt, 0)
@@ -58,12 +60,38 @@ function love.update(dt)
         val:move(dt)
     end
 
+    --detects the collisions with each asteroids
+    for key, val in ipairs(asteroids) do
+        local collisions = HC.collisions(val.shape)
+        for shape, vector in pairs(collisions) do
+            if tableContainsShape(bullets, shape) then
+                print("collision with a bullet")
+            elseif tableContainsShape(asteroids, shape) then
+                print("collision with an asteroid")
+            elseif shape == player.shape then
+                print("collision with the player")
+            else
+                print("collision with an unknown object")
+            end
+        end
+    end
+
 end
 
 function love.mousepressed(x, y, button)
     if button == "l" then
         bullets[#bullets+1] = player:shoot(x, y)
     end
+end
+
+--used to check if the collisions come from a bullet or an asteroid
+function tableContainsShape(table, shape)
+    for key, value in ipairs(table) do
+        if value.shape == shape then
+            return true
+        end
+    end
+    return false
 end
 
 function love.draw()
