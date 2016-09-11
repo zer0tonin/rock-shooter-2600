@@ -1,11 +1,16 @@
+local HC = require "HC"
 local Ship = require "ship"
 local Asteroid = require "asteroid"
 
 function love.load()
     timer = love.timer.getTime()
 
-    player = Ship:new(love.graphics.newImage("assets/ship.png"))
+    love.physics.setMeter(100)
+    love.physics.newWorld(0)
 
+    player = Ship:new()
+
+    --images for the asteroids
     image = {}
     image[50] = love.graphics.newImage("assets/asteroid50.png")
     image[100] = love.graphics.newImage("assets/asteroid100.png")
@@ -41,39 +46,9 @@ function love.update(dt)
     --generates new asteroids
     --should be a revamped Constructor
     if #asteroids < 3 or love.timer.getTime() - timer > 30 then
-        math.randomseed(os.time() * #asteroids)
-        local size = math.random()
 
-        --picks the size
-        if size < 0.20 then
-            size = 50
-        elseif size < 0.60 then
-            size = 100
-        elseif size < 0.90 then
-            size = 150
-        else
-            size = 200
-        end
 
-        --picks if it will come from the top or the bottom of the screen
-        math.randomseed(os.time() * #asteroids)
-        local location = math.random()
-        local x = math.random(0, 800)
-        local y = math.random(-100, 0)
-
-       if location < 0.25 then
-            x = math.random(800, 900)
-            y = math.random(0, 600)
-        elseif location < 0.50 then
-            x = math.random(0, 800)
-            y = math.random(600, 700)
-        elseif location < 0.75 then
-            x = math.random(-100, 0)
-            y = math.random(0, 600)
-        else
-        end
-
-        asteroids[#asteroids+1] = Asteroid:new(image[size], x, y, size)
+        asteroids[#asteroids+1] = Asteroid:new(image)
     end
 
     for key, val in ipairs(asteroids) do

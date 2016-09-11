@@ -7,15 +7,47 @@ local Asteroid = {}
     newY: the starting y coordinate
     newSize: the size of the asteroid (must be equal to the image's size)
 --]]
-function Asteroid:new(newImage, newX, newY, newSize)
+function Asteroid:new(images)
     math.randomseed(os.time())
+
+    math.randomseed(os.time() * #asteroids)
+    local newSize = math.random()
+
+    --picks the size
+    if newSize < 0.20 then
+        newSize = 50
+    elseif newSize < 0.60 then
+        newSize = 100
+    elseif newSize < 0.90 then
+        newSize = 150
+    else
+        newSize = 200
+    end
+
+    --picks if it will come from the top or the bottom of the screen
+    math.randomseed(os.time() * #asteroids)
+    local location = math.random()
+    local newX = math.random(0, 800)
+    local newY = math.random(-100, 0)
+
+   if location < 0.25 then
+        newX = math.random(800, 900)
+        newY = math.random(0, 600)
+    elseif location < 0.50 then
+        newX = math.random(0, 800)
+        newY = math.random(600, 700)
+    elseif location < 0.75 then
+        newX = math.random(-100, 0)
+        newY = math.random(0, 600)
+    else
+    end
 
     local newAsteroid = {
         x = newX,
         y = newY,
         r = 0,
         size = newSize,
-        image = newImage,
+        image = image[newSize],
         speed = 50,
         wayPoint = {
             x = math.random(0, 800),

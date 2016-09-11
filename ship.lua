@@ -6,7 +6,7 @@ local Ship = {}
     Constructor :
     newImage : the ship's image
 ]]--
-function Ship:new(newImage)
+function Ship:new(world)
     local newShip = {
         x = 300,
         y = 400,
@@ -14,7 +14,10 @@ function Ship:new(newImage)
         width = 53,
         height = 63,
         speed = 200,
-        image = newImage
+        image = love.graphics.newImage("assets/ship.png"),
+        body = newBody,
+        shape = newShape,
+        fixture = newFixture
     }
 
     self.__index = self
