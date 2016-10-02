@@ -117,19 +117,4 @@ function Asteroid:move(dt)
     end
 end
 
-function Asteroid:shot()
-    if size == 200 then
-        --2 new 100
-    end
-    if size == 150 then
-        --3 new 50
-    end
-    if size == 100 then
-        --2 new 50
-    end
-    if size == 50 then
-        --DEAD!
-    end
-end
-
 return Asteroid
