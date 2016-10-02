@@ -17,7 +17,6 @@ local images
 local asteroids
 local bullets
 local score
-local font
 
 function game:enter()
     timer = love.timer.getTime()
@@ -37,9 +36,6 @@ function game:enter()
 
     asteroids = {}
     bullets = {}
-
-    font = love.graphics.newFont("assets/Squareo.ttf", 25)
-    love.graphics.setFont(font)
 end
 
 -- reset the state on retry
@@ -73,7 +69,7 @@ function game:update(dt)
     player:rotate(math.atan2(mouse.y - player.y, mouse.x - player.x) + math.pi/2)
 
     --generates new asteroids
-    if #asteroids < 3 or love.timer.getTime() - timer > 10 then
+    if #asteroids < 3 or love.timer.getTime() - timer > 5 then
         asteroids[#asteroids+1] = Asteroid:newRandom(#asteroids)
         timer = love.timer.getTime()
     end

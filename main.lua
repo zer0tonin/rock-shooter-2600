@@ -1,8 +1,8 @@
 local Gamestate = require "hump.gamestate"
-local game = require "states.game"
-local menu = require "states.menu"
+--can't be loaded from gameOver if local
+menu = require "states.menu"
 
 function love.load()
     Gamestate.registerEvents()
-    Gamestate.switch(game)
+    Gamestate.switch(menu)
 end

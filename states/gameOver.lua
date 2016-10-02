@@ -19,8 +19,11 @@ end
 
 function gameOver:mousepressed(x, y, button)
     if button == "l" then
-        if(x >= 350 and y >= 300 and x< 425 and y < 325) then
+        if(x >= 350 and y >= 300 and x < 425 and y < 325) then
             Gamestate.switch(game)
+        end
+        if(x >= 355 and y >= 400 and x < 425 and y < 425) then
+            Gamestate.switch(menu)
         end
     end
 end
