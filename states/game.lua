@@ -14,8 +14,8 @@ local game = {}
 local timer
 local player
 local images
-local asteroids = {}
-local bullets = {}
+local asteroids
+local bullets
 local score
 local font
 
@@ -35,8 +35,20 @@ function game:enter()
 
     score = 0
 
+    asteroids = {}
+    bullets = {}
+
     font = love.graphics.newFont("assets/Squareo.ttf", 25)
     love.graphics.setFont(font)
+end
+
+-- reset the state on retry
+function game:resume()
+    asteroids = nil
+    bullets = nil
+    asteroids = {}
+    bullets = {}
+    score = 0
 end
 
 function game:update(dt)
